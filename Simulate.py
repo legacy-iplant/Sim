@@ -4,9 +4,6 @@ import sys
 import simuPOP as sim
 from simuPOP.utils import saveCSV
 
-effects = [3, 2, 1]
-
-
 def usage():
 	print "\n"
 	print "-h or --help for help"
@@ -70,6 +67,7 @@ def main():
 			if verbose:
 				print "Loci positions per individual are:", loci
 		elif o[0] in ("-e", "--effect"):
+			global effects
 			effects = o[1].split(",")
 			effects = map(int, effects)
 			if verbose:
@@ -91,7 +89,7 @@ def main():
 
 	pop.evolve(initOps=[sim.InitSex(), sim.InitGenotype(prop=[0.7, 0.3])], matingScheme=sim.RandomMating(),
 	           postOps=[sim.PyQuanTrait(loci=loci, func=trait, infoFields=["qtrait"])],
-	           gen=10)
+	           gen=5)
 
 	genotypes = list()
 	for i in pop.individuals():
