@@ -44,6 +44,7 @@ def main():
 
 	verbose = False
 	has_filename = False
+	print "\n"
 
 	for o in opts:
 		if o[0] in ("-v", "--verbose"):
@@ -57,7 +58,7 @@ def main():
 			individuals = o[1]
 			if verbose:
 				print "Population size is set at", individuals
-		elif o[0] in ("n", "--number"):
+		elif o[0] in ("-n", "--number"):
 			number = o[1]
 			if verbose:
 				print "Number of loci per individual is set at", number
@@ -69,7 +70,7 @@ def main():
 		elif o[0] in ("-e", "--effect"):
 			global effects
 			effects = o[1].split(",")
-			effects = map(int, effects)
+			effects = map(float, effects)
 			if verbose:
 				print "Effects for loci per individual are:", effects
 		elif o[0] in ("-f", "--filename"):
@@ -107,6 +108,7 @@ def main():
 	f.close()
 
 	saveCSV(pop, filename + "_genomes.csv")
+	print "\n\n"
 
 
 if __name__ == "__main__":
