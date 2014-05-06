@@ -161,7 +161,7 @@ def main():
 			count += 1
 			xn = xn - p(xn)/p_d(xn)
 		if verbose:
-			print "Estimated variance of phenotypes using Newton's method for specified heritability: ", xn
+			print "Estimated variance of phenotypes for specified heriability using Newton's method: ", xn
 		return xn
 
 	if verbose:
