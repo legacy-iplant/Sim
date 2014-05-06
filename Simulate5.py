@@ -27,7 +27,7 @@ def usage():
 	print "-i or --herit for specifying heritability (between 0 and 1)"
 
 
-def trait(geno):
+def additive_model(geno):
 	my_sum = 0
 	my_total_sum = 0
 	true_count = 0
@@ -112,7 +112,7 @@ def main():
 		print "Evolving population..."
 
 	pop.evolve(initOps=[sim.InitSex(), sim.InitGenotype(prop=[0.7, 0.3])], matingScheme=sim.RandomMating(),
-	           postOps=[sim.PyQuanTrait(loci=loci, func=trait, infoFields=["qtrait"])],
+	           postOps=[sim.PyQuanTrait(loci=loci, func=additive_model, infoFields=["qtrait"])],
 	           gen=5)
 
 	if verbose:
@@ -161,7 +161,7 @@ def main():
 			count += 1
 			xn = xn - p(xn)/p_d(xn)
 		if verbose:
-			print "Estimated variance of phenotypes using Newton's method: ", xn
+			print "Estimated variance of phenotypes using Newton's method for specified heritability: ", xn
 		return xn
 
 	if verbose:
@@ -171,10 +171,6 @@ def main():
 	new_phenotypes = list()
 	for each in phenotypes:
 		new_phenotypes.append(random.normalvariate(each, estimated_variance))
-	#print phenotypes
-	#print new_phenotypes
-
-	#print newton(p)
 
 	f = open(filename + "_qtrait.txt", "w")
 	f.write("\n".join(map(lambda x: str(x), new_phenotypes)))
