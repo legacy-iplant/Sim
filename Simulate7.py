@@ -24,7 +24,7 @@ def usage():
 	print "-l or --loci to specify loci with effects (separated by commas w/ no spaces)"
 	print "-e or --effect to specify corresponding loci effects (separated by commas w/ no spaces)"
 	print "-i or --heritability for specifying heritability (between 0 and 1)"
-	print "-m or --mean for specifying population mean"
+	print "-m or --mean for specifying population/s mean (seperated by commas w/ no spaces if multiple populations)"
 	print "-g or --gen for the number of generations for the coalescent model to evolve"
 	print "-r or --rrate to specify a recombination rate (between 0 and 1)"
 	print "-f or --filename for naming output in CSV format"
@@ -151,10 +151,18 @@ def main():
 		phenotypes.append(i.qtrait)
 
 	def fun(sigma, h):
-		x_exact = phenotypes
+		x_exact = list()
+		count = 0
+		for i in phenotypes:
+			current_mean = mean[pop.subPopIndPair(count)[0]]
+			x_exact.append(current_mean + i)
+			count += 1
 		x_random = list()
+		count = 0
 		for each in phenotypes:
-			x_random.append(random.normalvariate(each, sigma))
+			current_mean = mean[pop.subPopIndPair(count)[0]]
+			x_random.append(random.normalvariate(current_mean + each, sigma))
+			count += 1
 		r = pearsonr(x_exact, x_random)[0]
 		return r - math.sqrt(h)
 
@@ -181,6 +189,8 @@ def main():
 				sys.exit()
 			count += 1
 			xn = xn - p(xn)/p_d(xn)
+		if xn < 0.0:
+			xn = 0.0
 		if verbose:
 			print "Estimated variance of phenotypes for specified heriability: ", xn
 		return xn
