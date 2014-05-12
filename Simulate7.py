@@ -19,7 +19,7 @@ def usage():
 	#print "\n"
 	print "-h or --help for help"
 	print "-v or --verbose for verbose"
-	print "-s or --size to specify population size"
+	print "-s or --size to specify population size/s"
 	print "-n or --number to specify number of loci"
 	print "-l or --loci to specify loci with effects (separated by commas w/ no spaces)"
 	print "-e or --effect to specify corresponding loci effects (separated by commas w/ no spaces)"
