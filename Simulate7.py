@@ -210,6 +210,8 @@ def main():
 	f.write("\n".join(map(lambda x: str(x), new_phenotypes)))
 	f.close()
 
+	numpy.savetxt(filename + "_kt_ote2.txt", numpy.column_stack((loci, numpy.array(effects))))
+
 	saveCSV(pop, filename + "_genomes.csv")
 	print "\n\n"
 
