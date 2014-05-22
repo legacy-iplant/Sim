@@ -7,7 +7,9 @@ import numpy
 import simuPOP as sim
 from simuPOP.utils import saveCSV
 
+"""Functions use somewhere in the software"""
 
+# drange produces a set list sequence 
 def drange(start, stop, step):
 	r = start
 	while r < stop:
@@ -15,6 +17,7 @@ def drange(start, stop, step):
 		r += step
 
 
+# usage() prints to the screen the help messages; in other words, the possible command-lines to be used in the execution the software
 def usage():
 	#print "\n"
 	print "-h or --help for help"
@@ -29,7 +32,9 @@ def usage():
 	print "-r or --rrate to specify a recombination rate (between 0 and 1)"
 	print "-f or --filename for naming output in CSV format"
 
+"""Below is the list of "models" to be used in the simulation of a quantitative trait"""
 
+# The additive model assumes a linear and consistent increase for the presence of each allele
 def additive_model(geno):
 	my_sum = 0
 	my_total_sum = 0
@@ -46,9 +51,10 @@ def additive_model(geno):
 	return my_trait
 
 
+# The main function: executes the obtaining of command-line flags and then executes the simuPOP simulation.
 def main():
 
-	## Check for arguments passed
+	# Check for arguments passed
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], shortopts="vhs:n:l:e:f:i:m:g:r:", longopts=["verbose", "help", "size=", 
 			"number=", "loci=", "effect=", "mean=", "filename=", "heritability=", "gen=", "rrate="])
@@ -150,6 +156,7 @@ def main():
 	for i in pop.individuals():
 		phenotypes.append(i.qtrait)
 
+	# fun() obtains the heritability equation set to zero for various settings of sigma (standard deviation)
 	def fun(sigma, h):
 		x_exact = list()
 		count = 0
@@ -169,6 +176,7 @@ def main():
 	if verbose:
 		print "Building polynomial model for variance tuning..."
 
+	# Fits a polynomial model in numpy to the values obtained from the fun() function
 	points = list()
 	for i in drange(0, max(effects)*10, 0.001):
 		points.append(i)
@@ -178,6 +186,7 @@ def main():
 	z = numpy.polyfit(x=points, y=y_points, deg=3)
 	p = numpy.poly1d(z)
 
+	# Netwon's method finds the polynomial model's roots
 	def newton(p):
 		xn = 100
 		p_d = p.deriv()
@@ -198,6 +207,7 @@ def main():
 	if verbose:
 		print "Using Newton's method to find polynomial roots..."
 
+	# Files are saved to the specified location
 	estimated_variance = newton(p)
 	new_phenotypes = list()
 	count = 0
